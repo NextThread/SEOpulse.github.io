@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Sun, Moon } from "lucide-react";
+import { Menu, X, Sun, Moon, LogOut } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
+import { useAuth } from "@/hooks/use-auth";
+import { signOut } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -12,8 +16,15 @@ const navLinks = [
 
 export default function Navbar() {
   const { isDark, toggle } = useTheme();
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    navigate("/");
+  };
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
@@ -68,8 +79,16 @@ export default function Navbar() {
           >
             {isDark ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-          <Button variant="ghost" size="sm">Login</Button>
-          <Button size="sm">Sign Up</Button>
+          {user ? (
+            <Button variant="ghost" size="sm" onClick={handleLogout}>
+              <LogOut size={16} className="mr-1" /> Logout
+            </Button>
+          ) : (
+            <>
+              <Button variant="ghost" size="sm" onClick={() => navigate("/login")}>Login</Button>
+              <Button size="sm" onClick={() => navigate("/signup")}>Sign Up</Button>
+            </>
+          )}
         </div>
 
         {/* Mobile right */}
@@ -104,8 +123,14 @@ export default function Navbar() {
             </button>
           ))}
           <div className="flex gap-3 mt-4">
-            <Button variant="ghost">Login</Button>
-            <Button>Sign Up</Button>
+            {user ? (
+              <Button onClick={handleLogout}><LogOut size={16} className="mr-1" /> Logout</Button>
+            ) : (
+              <>
+                <Button variant="ghost" onClick={() => { setMobileOpen(false); navigate("/login"); }}>Login</Button>
+                <Button onClick={() => { setMobileOpen(false); navigate("/signup"); }}>Sign Up</Button>
+              </>
+            )}
           </div>
         </div>
       )}
