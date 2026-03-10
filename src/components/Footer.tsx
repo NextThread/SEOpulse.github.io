@@ -45,8 +45,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-background/10 pt-6 flex flex-col md:flex-row justify-between items-center gap-2 text-xs opacity-60">
-          <span>© 2026 SEOPulse AI by Anurag Roy, Agartala. Made with ❤️ in Tripura.</span>
-          <span>Powered by Grok</span>
+          <span>© 2026 SEOPulse AI. All rights reserved.</span>
         </div>
       </div>
     </footer>

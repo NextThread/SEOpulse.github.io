@@ -52,7 +52,7 @@ export default function HeroSection() {
           transition={{ duration: 0.6, delay: 0.45 }}
           className="flex flex-wrap items-center justify-center gap-3 mb-16"
         >
-          {["Powered by Grok AI", "10K+ Optimizations", "India-First Keywords"].map(
+          {["10K+ Optimizations", "India-First Keywords"].map(
             (badge) => (
               <span
                 key={badge}
