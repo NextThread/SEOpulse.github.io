@@ -43,9 +43,6 @@ export default function HeroSection() {
           <Button size="lg" onClick={() => setModalOpen(true)} className="gap-2 text-base px-8">
             Start Free Audit <ArrowRight size={18} />
           </Button>
-          <Button size="lg" variant="outline" className="gap-2 text-base px-8">
-            <Play size={18} /> Watch Demo
-          </Button>
         </motion.div>
 
         {/* Trust badges */}
