@@ -123,8 +123,14 @@ export default function Navbar() {
             </button>
           ))}
           <div className="flex gap-3 mt-4">
-            <Button variant="ghost">Login</Button>
-            <Button>Sign Up</Button>
+            {user ? (
+              <Button onClick={handleLogout}><LogOut size={16} className="mr-1" /> Logout</Button>
+            ) : (
+              <>
+                <Button variant="ghost" onClick={() => { setMobileOpen(false); navigate("/login"); }}>Login</Button>
+                <Button onClick={() => { setMobileOpen(false); navigate("/signup"); }}>Sign Up</Button>
+              </>
+            )}
           </div>
         </div>
       )}
