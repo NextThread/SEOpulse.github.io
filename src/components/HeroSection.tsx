@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Play } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AuditModal from "@/components/AuditModal";
 import DashboardMock from "@/components/DashboardMock";
@@ -43,9 +43,6 @@ export default function HeroSection() {
           <Button size="lg" onClick={() => setModalOpen(true)} className="gap-2 text-base px-8">
             Start Free Audit <ArrowRight size={18} />
           </Button>
-          <Button size="lg" variant="outline" className="gap-2 text-base px-8">
-            <Play size={18} /> Watch Demo
-          </Button>
         </motion.div>
 
         {/* Trust badges */}
@@ -55,7 +52,7 @@ export default function HeroSection() {
           transition={{ duration: 0.6, delay: 0.45 }}
           className="flex flex-wrap items-center justify-center gap-3 mb-16"
         >
-          {["Powered by Grok AI", "10K+ Optimizations", "India-First Keywords"].map(
+          {["10K+ Optimizations", "India-First Keywords"].map(
             (badge) => (
               <span
                 key={badge}
