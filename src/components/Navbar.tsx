@@ -16,8 +16,15 @@ const navLinks = [
 
 export default function Navbar() {
   const { isDark, toggle } = useTheme();
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    navigate("/");
+  };
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
