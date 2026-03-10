@@ -79,8 +79,16 @@ export default function Navbar() {
           >
             {isDark ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-          <Button variant="ghost" size="sm">Login</Button>
-          <Button size="sm">Sign Up</Button>
+          {user ? (
+            <Button variant="ghost" size="sm" onClick={handleLogout}>
+              <LogOut size={16} className="mr-1" /> Logout
+            </Button>
+          ) : (
+            <>
+              <Button variant="ghost" size="sm" onClick={() => navigate("/login")}>Login</Button>
+              <Button size="sm" onClick={() => navigate("/signup")}>Sign Up</Button>
+            </>
+          )}
         </div>
 
         {/* Mobile right */}
