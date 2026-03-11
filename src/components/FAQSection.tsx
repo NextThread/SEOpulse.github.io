@@ -9,27 +9,27 @@ import {
 const faqs = [
   {
     q: "How accurate are the SEO suggestions?",
-    a: "Powered by Grok AI + SERP data – 85%+ match pro tools like Surfer. Premium gives projected ROI.",
-  },
-  {
-    q: "Is it India-specific?",
-    a: "Yes! Handles rupees, local languages, and NE trends like Agartala e-com.",
+    a: "Our AI engine cross-references SERP data with industry best practices — 85%+ accuracy matching pro tools like Surfer. Premium gives projected ROI for each suggestion.",
   },
   {
     q: "What if I'm a beginner?",
-    a: "Zero learning curve – paste & go. Free tier teaches basics.",
+    a: "Zero learning curve — paste & go. The free audit teaches you the basics, and our suggestions are written in plain language anyone can follow.",
   },
   {
-    q: "Integrations?",
-    a: "Exports to Google Docs, WordPress. Premium: Zapier hooks.",
+    q: "What integrations are available?",
+    a: "Export reports to Google Docs and WordPress. Premium users get access to Zapier hooks and API access for custom workflows.",
   },
   {
-    q: "Secure?",
-    a: "Your data never stored without consent. GDPR-compliant.",
+    q: "Is my data secure?",
+    a: "Absolutely. Your data is never stored without consent. All transmissions are encrypted with TLS 1.3, and we are fully GDPR-compliant.",
   },
   {
-    q: "Refund policy?",
-    a: "Full 30 days – no questions.",
+    q: "What's the refund policy?",
+    a: "Full 30-day money-back guarantee on all premium plans — no questions asked.",
+  },
+  {
+    q: "Can I try before I buy?",
+    a: "Yes! Every user gets 1 free premium-quality audit. Experience the full power of our AI analysis before committing to a plan.",
   },
 ];
 
@@ -49,18 +49,25 @@ export default function FAQSection() {
 
         <Accordion type="single" collapsible className="space-y-2">
           {faqs.map((faq, i) => (
-            <AccordionItem
+            <motion.div
               key={i}
-              value={`faq-${i}`}
-              className="border border-border rounded-lg px-4 data-[state=open]:border-muted-foreground/30"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.05 }}
             >
-              <AccordionTrigger className="text-left font-medium text-sm md:text-base hover:no-underline">
-                {faq.q}
-              </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground text-sm">
-                {faq.a}
-              </AccordionContent>
-            </AccordionItem>
+              <AccordionItem
+                value={`faq-${i}`}
+                className="border border-border rounded-lg px-4 data-[state=open]:border-primary/30 data-[state=open]:shadow-sm transition-all"
+              >
+                <AccordionTrigger className="text-left font-medium text-sm md:text-base hover:no-underline">
+                  {faq.q}
+                </AccordionTrigger>
+                <AccordionContent className="text-muted-foreground text-sm">
+                  {faq.a}
+                </AccordionContent>
+              </AccordionItem>
+            </motion.div>
           ))}
         </Accordion>
       </div>
