@@ -5,7 +5,7 @@ const features = [
   {
     icon: Search,
     title: "Instant Keyword Engine",
-    desc: "AI pulls 50+ long-tails tailored to your niche (e.g., Tripura tourism). Free: Basics. Premium: Competitor gaps + volume estimates.",
+    desc: "AI pulls 50+ long-tail keywords tailored to your niche. Free: Basics. Premium: Competitor gaps + volume estimates.",
   },
   {
     icon: TrendingUp,
@@ -15,12 +15,12 @@ const features = [
   {
     icon: Lightbulb,
     title: "Meta & Snippet Magic",
-    desc: "Auto-generate titles/descriptions with CTR previews. Voice search ready for Hindi/English queries.",
+    desc: "Auto-generate titles/descriptions with CTR previews. Voice search ready for multilingual queries.",
   },
   {
     icon: ShieldCheck,
-    title: "India-Optimized",
-    desc: "GST-compliant exports, local trends (Assamese/Bengali keywords for NE creators). No fluff, just results.",
+    title: "Enterprise-Ready",
+    desc: "White-label reports, API access, bulk audits, and team collaboration. Built for agencies and growing businesses.",
   },
 ];
 
@@ -56,10 +56,11 @@ export default function FeaturesSection() {
               whileInView="visible"
               viewport={{ once: true, margin: "-60px" }}
               variants={cardVariants}
-              className="rounded-lg border border-border bg-card p-6 hover:border-muted-foreground/30 transition-colors duration-200"
+              whileHover={{ y: -6, transition: { duration: 0.2 } }}
+              className="rounded-xl border border-border bg-card p-6 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 group"
             >
-              <div className="w-10 h-10 rounded-md bg-primary/10 flex items-center justify-center mb-4">
-                <f.icon size={20} className="text-primary" />
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                <f.icon size={22} className="text-primary" />
               </div>
               <h3 className="font-display text-lg font-semibold mb-2">{f.title}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>

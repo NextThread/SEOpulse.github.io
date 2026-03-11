@@ -12,6 +12,7 @@ const navLinks = [
   { label: "Features", href: "#features" },
   { label: "Pricing", href: "#pricing" },
   { label: "FAQ", href: "#faq" },
+  { label: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
@@ -42,7 +43,7 @@ export default function Navbar() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-card/95 backdrop-blur-md border-b border-border"
+          ? "bg-card/95 backdrop-blur-md border-b border-border shadow-sm"
           : "bg-transparent"
       }`}
       role="navigation"
@@ -57,7 +58,6 @@ export default function Navbar() {
           SEOPulse AI
         </button>
 
-        {/* Desktop links */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <button
@@ -70,7 +70,6 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* Desktop right */}
         <div className="hidden md:flex items-center gap-3">
           <button
             onClick={toggle}
@@ -91,26 +90,16 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* Mobile right */}
         <div className="flex md:hidden items-center gap-2">
-          <button
-            onClick={toggle}
-            className="p-2 text-muted-foreground"
-            aria-label="Toggle theme"
-          >
+          <button onClick={toggle} className="p-2 text-muted-foreground" aria-label="Toggle theme">
             {isDark ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="p-2 text-foreground"
-            aria-label="Toggle menu"
-          >
+          <button onClick={() => setMobileOpen(!mobileOpen)} className="p-2 text-foreground" aria-label="Toggle menu">
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile overlay */}
       {mobileOpen && (
         <div className="md:hidden fixed inset-0 top-16 bg-background z-40 flex flex-col items-center justify-center gap-8">
           {navLinks.map((link) => (

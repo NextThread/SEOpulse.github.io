@@ -1,10 +1,19 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 export default function CTASection() {
+  const scrollToContact = () => {
+    document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <section className="section-spacing bg-primary">
-      <div className="container text-center">
+    <section className="section-spacing bg-primary relative overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-accent/20 blur-3xl" />
+        <div className="absolute -bottom-20 -left-20 w-80 h-80 rounded-full bg-primary-foreground/5 blur-3xl" />
+      </div>
+      <div className="container text-center relative z-10">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -17,23 +26,14 @@ export default function CTASection() {
         <p className="text-primary-foreground/80 mb-8 text-lg">
           Join 5K+ creators boosting traffic 2x.
         </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Button
-            size="lg"
-            variant="secondary"
-            className="text-base px-8"
-            onClick={() => console.log("Signing up...")}
-          >
-            Free Trial
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="text-base px-8 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
-          >
-            Book Demo
-          </Button>
-        </div>
+        <Button
+          size="lg"
+          variant="secondary"
+          className="text-base px-8 gap-2 group"
+          onClick={scrollToContact}
+        >
+          Contact Us <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+        </Button>
       </div>
     </section>
   );
