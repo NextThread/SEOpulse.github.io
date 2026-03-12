@@ -195,7 +195,7 @@ export default function PaymentModal({ open, onClose, plan }: PaymentModalProps)
                     <p className="text-2xl font-bold mb-1">{plan.priceInr}</p>
                     <p className="text-xs text-muted-foreground mb-4">Scan & pay via any UPI app</p>
                     <div className="bg-white rounded-xl p-4 inline-block mx-auto">
-                      <img src={paymentQr} alt="Payment QR Code" className="w-48 h-48 mx-auto" />
+                      <img src="/images/payment-qr.png" alt="Payment QR Code" className="w-48 h-48 mx-auto" />
                     </div>
                   </div>
                   <div>
