@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, QrCode, Wallet, Clock, CheckCircle2, Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import paymentQr from "@/assets/payment-qr.png";
+// QR image will be placed at public/images/payment-qr.png
 
 interface PaymentModalProps {
   open: boolean;
