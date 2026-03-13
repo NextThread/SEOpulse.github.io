@@ -1,4 +1,4 @@
-import React, { ComponentPropsWithoutRef, useRef } from 'react';
+import { ComponentPropsWithoutRef } from 'react';
 import { cn } from '@/lib/utils';
 
 interface MarqueeProps extends ComponentPropsWithoutRef<'div'> {
@@ -19,11 +19,8 @@ export function Marquee({
   repeat = 4,
   ...props
 }: MarqueeProps) {
-  const marqueeRef = useRef<HTMLDivElement>(null);
-
   return (
     <div
-      ref={marqueeRef}
       {...props}
       className={cn(
         'group flex overflow-hidden p-2 [--duration:40s] [--gap:1rem] [gap:var(--gap)]',
