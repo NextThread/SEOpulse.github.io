@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Menu, X, Sun, Moon, LogOut } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "@/hooks/use-theme";
 import { useAuth } from "@/hooks/use-auth";
 import { signOut } from "firebase/auth";
@@ -40,44 +41,54 @@ export default function Navbar() {
   };
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    <motion.nav
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "bg-card/95 backdrop-blur-md border-b border-border shadow-sm"
+          ? "bg-card/80 backdrop-blur-xl border-b border-border/50 shadow-lg shadow-background/10"
           : "bg-transparent"
       }`}
       role="navigation"
       aria-label="Main navigation"
     >
       <div className="container flex items-center justify-between h-16">
-        <button
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={() => handleNavClick("#home")}
           className="font-display text-xl font-bold text-primary"
           aria-label="Go to top"
         >
           SEOPulse AI
-        </button>
+        </motion.button>
 
         <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <button
+          {navLinks.map((link, i) => (
+            <motion.button
               key={link.href}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 + i * 0.05 }}
               onClick={() => handleNavClick(link.href)}
-              className="text-sm font-medium text-muted-foreground hover:text-foreground relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all hover:after:w-full"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all hover:after:w-full transition-colors"
             >
               {link.label}
-            </button>
+            </motion.button>
           ))}
         </div>
 
         <div className="hidden md:flex items-center gap-3">
-          <button
+          <motion.button
+            whileHover={{ rotate: 180 }}
+            transition={{ duration: 0.3 }}
             onClick={toggle}
             className="p-2 rounded-md text-muted-foreground hover:text-foreground transition-colors"
             aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
           >
             {isDark ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
+          </motion.button>
           {user ? (
             <Button variant="ghost" size="sm" onClick={handleLogout}>
               <LogOut size={16} className="mr-1" /> Logout
@@ -85,7 +96,9 @@ export default function Navbar() {
           ) : (
             <>
               <Button variant="ghost" size="sm" onClick={() => navigate("/login")}>Login</Button>
-              <Button size="sm" onClick={() => navigate("/signup")}>Sign Up</Button>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button size="sm" onClick={() => navigate("/signup")}>Sign Up</Button>
+              </motion.div>
             </>
           )}
         </div>
@@ -100,29 +113,40 @@ export default function Navbar() {
         </div>
       </div>
 
-      {mobileOpen && (
-        <div className="md:hidden fixed inset-0 top-16 bg-background z-40 flex flex-col items-center justify-center gap-8">
-          {navLinks.map((link) => (
-            <button
-              key={link.href}
-              onClick={() => handleNavClick(link.href)}
-              className="text-2xl font-display font-semibold text-foreground"
-            >
-              {link.label}
-            </button>
-          ))}
-          <div className="flex gap-3 mt-4">
-            {user ? (
-              <Button onClick={handleLogout}><LogOut size={16} className="mr-1" /> Logout</Button>
-            ) : (
-              <>
-                <Button variant="ghost" onClick={() => { setMobileOpen(false); navigate("/login"); }}>Login</Button>
-                <Button onClick={() => { setMobileOpen(false); navigate("/signup"); }}>Sign Up</Button>
-              </>
-            )}
-          </div>
-        </div>
-      )}
-    </nav>
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden fixed inset-0 top-16 bg-background/95 backdrop-blur-xl z-40 flex flex-col items-center justify-center gap-8"
+          >
+            {navLinks.map((link, i) => (
+              <motion.button
+                key={link.href}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.08 }}
+                onClick={() => handleNavClick(link.href)}
+                className="text-2xl font-display font-semibold text-foreground"
+              >
+                {link.label}
+              </motion.button>
+            ))}
+            <div className="flex gap-3 mt-4">
+              {user ? (
+                <Button onClick={handleLogout}><LogOut size={16} className="mr-1" /> Logout</Button>
+              ) : (
+                <>
+                  <Button variant="ghost" onClick={() => { setMobileOpen(false); navigate("/login"); }}>Login</Button>
+                  <Button onClick={() => { setMobileOpen(false); navigate("/signup"); }}>Sign Up</Button>
+                </>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.nav>
   );
 }
