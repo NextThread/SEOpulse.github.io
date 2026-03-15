@@ -70,7 +70,7 @@ export default function HeroSection() {
     hidden: { opacity: 0, y: 20, rotateX: 20, filter: "blur(8px)" },
     visible: (i: number) => ({
       opacity: 1, y: 0, rotateX: 0, filter: "blur(0px)",
-      transition: { delay: i * 0.06, duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+      transition: { delay: i * 0.06, duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
     }),
   };
 
