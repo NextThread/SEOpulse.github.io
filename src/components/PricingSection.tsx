@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Check, Star, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
@@ -81,6 +81,14 @@ export default function PricingSection() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [paymentPlan, setPaymentPlan] = useState<{ name: string; priceUsd: string; priceInr: string } | null>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  const bgY = useTransform(scrollYProgress, [0, 1], ["5%", "-5%"]);
 
   const handlePlanClick = (plan: typeof plans[0]) => {
     if (!plan.isPaid) {
@@ -92,35 +100,63 @@ export default function PricingSection() {
   };
 
   return (
-    <section id="pricing" className="section-spacing">
-      <div className="container">
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.5 }} className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-semibold text-primary mb-4">
+    <section ref={sectionRef} id="pricing" className="section-spacing relative overflow-hidden">
+      {/* Parallax bg element */}
+      <motion.div
+        style={{ y: bgY }}
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-primary/3 blur-3xl pointer-events-none"
+      />
+
+      <div className="container relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center mb-16"
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-semibold text-primary mb-4"
+          >
             <Sparkles size={14} /> Simple & Transparent
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Choose Your Plan</h2>
-          <p className="text-muted-foreground">Cancel anytime. 30-day money-back guarantee.</p>
+          </motion.div>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4">Choose Your Plan</h2>
+          <p className="text-muted-foreground text-lg">Cancel anytime. 30-day money-back guarantee.</p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
           {plans.map((plan, i) => (
             <motion.div
               key={plan.name}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 80 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              whileHover={{ y: -8, transition: { duration: 0.2 } }}
+              transition={{
+                duration: 0.8,
+                delay: i * 0.12,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              whileHover={{ y: -10, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } }}
               className={`rounded-2xl border p-6 relative group transition-all duration-300 ${
                 plan.popular
                   ? "border-primary bg-card shadow-xl shadow-primary/10 scale-[1.02]"
-                  : "border-border bg-card hover:shadow-lg hover:border-primary/20"
+                  : "border-border bg-card hover:shadow-xl hover:border-primary/20"
               }`}
             >
               {plan.popular && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-primary to-accent text-primary-foreground text-xs font-bold px-4 py-1 rounded-full flex items-center gap-1">
+                <motion.span
+                  initial={{ opacity: 0, y: -10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.5, duration: 0.5 }}
+                  className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-primary to-accent text-primary-foreground text-xs font-bold px-4 py-1 rounded-full flex items-center gap-1"
+                >
                   <Star size={12} fill="currentColor" /> Most Popular
-                </span>
+                </motion.span>
               )}
               <h3 className="font-display text-xl font-bold mb-1">{plan.name}</h3>
               {plan.highlight && <p className="text-xs text-accent font-medium mb-3">{plan.highlight}</p>}
