@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Send, Mail, MessageSquare } from "lucide-react";
+import { useState, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Send, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
@@ -8,6 +8,15 @@ export default function ContactSection() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [sending, setSending] = useState(false);
   const { toast } = useToast();
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  const formY = useTransform(scrollYProgress, [0, 0.4], [60, 0]);
+  const formOpacity = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,29 +30,34 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="section-spacing bg-card">
-      <div className="container max-w-2xl">
+    <section ref={sectionRef} id="contact" className="section-spacing bg-card relative overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+
+      <div className="container max-w-2xl relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Get In Touch</h2>
-          <p className="text-muted-foreground">Have a question or need help? We'd love to hear from you.</p>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4">Get In Touch</h2>
+          <p className="text-muted-foreground text-lg">Have a question or need help? We'd love to hear from you.</p>
         </motion.div>
 
         <motion.form
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
+          style={{ y: formY, opacity: formOpacity }}
           onSubmit={handleSubmit}
-          className="space-y-4 rounded-2xl border border-border bg-background p-6 md:p-8"
+          className="space-y-4 rounded-2xl border border-border bg-background p-6 md:p-8 shadow-lg"
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1, duration: 0.5 }}
+            >
               <label className="text-sm font-medium mb-1.5 block">Name</label>
               <input
                 type="text"
@@ -53,8 +67,13 @@ export default function ContactSection() {
                 className="w-full rounded-xl border border-input bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                 required
               />
-            </div>
-            <div>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+            >
               <label className="text-sm font-medium mb-1.5 block">Email</label>
               <input
                 type="email"
@@ -64,9 +83,14 @@ export default function ContactSection() {
                 className="w-full rounded-xl border border-input bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                 required
               />
-            </div>
+            </motion.div>
           </div>
-          <div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
             <label className="text-sm font-medium mb-1.5 block">Message</label>
             <textarea
               value={form.message}
@@ -76,21 +100,28 @@ export default function ContactSection() {
               className="w-full rounded-xl border border-input bg-card px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all resize-none"
               required
             />
-          </div>
-          <Button type="submit" className="w-full gap-2 rounded-xl" size="lg" disabled={sending}>
-            {sending ? (
-              <>
-                <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}>
-                  <MessageSquare size={16} />
-                </motion.div>
-                Sending...
-              </>
-            ) : (
-              <>
-                <Send size={16} /> Send Message
-              </>
-            )}
-          </Button>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
+            <Button type="submit" className="w-full gap-2 rounded-xl" size="lg" disabled={sending}>
+              {sending ? (
+                <>
+                  <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}>
+                    <MessageSquare size={16} />
+                  </motion.div>
+                  Sending...
+                </>
+              ) : (
+                <>
+                  <Send size={16} /> Send Message
+                </>
+              )}
+            </Button>
+          </motion.div>
         </motion.form>
       </div>
     </section>

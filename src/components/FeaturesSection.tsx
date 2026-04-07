@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
-import { Search, TrendingUp, Lightbulb, ShieldCheck, ArrowRight, Zap } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Search, TrendingUp, Lightbulb, ShieldCheck, Zap } from "lucide-react";
 
 const features = [
   {
@@ -50,6 +50,15 @@ export default function FeaturesSection() {
   const [rotationAngle, setRotationAngle] = useState(0);
   const [autoRotate, setAutoRotate] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  const bgScale = useTransform(scrollYProgress, [0, 0.5], [0.8, 1]);
+  const bgOpacity = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
 
   useEffect(() => {
     if (!autoRotate) return;
@@ -71,24 +80,61 @@ export default function FeaturesSection() {
   };
 
   return (
-    <section id="features" className="section-spacing relative overflow-hidden">
+    <section ref={sectionRef} id="features" className="section-spacing relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary/3 blur-3xl" />
+        <motion.div
+          style={{ scale: bgScale, opacity: bgOpacity }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-primary/3 blur-3xl"
+        />
       </div>
 
       <div className="container relative z-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.5 }} className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/5 px-4 py-1.5 text-xs font-semibold text-accent mb-4">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center mb-16"
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent/5 px-4 py-1.5 text-xs font-semibold text-accent mb-4"
+          >
             <Zap size={14} /> Powerful Features
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Why SEOPulse AI Crushes SEO Guesswork</h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">Our AI-powered platform delivers everything you need to dominate search rankings.</p>
+          </motion.div>
+          <h2 className="text-3xl md:text-5xl font-bold mb-4">
+            Why SEOPulse AI{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+              Crushes
+            </span>{" "}
+            SEO Guesswork
+          </h2>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="text-muted-foreground max-w-xl mx-auto text-lg"
+          >
+            Our AI-powered platform delivers everything you need to dominate search rankings.
+          </motion.p>
         </motion.div>
 
-        {/* Orbital view for desktop, cards for mobile */}
+        {/* Orbital view for desktop */}
         <div className="hidden lg:flex justify-center items-center" style={{ minHeight: 520 }}>
-          <div ref={containerRef} className="relative" style={{ width: 520, height: 520 }}
-            onClick={(e) => { if (e.target === e.currentTarget) { setActiveId(null); setAutoRotate(true); } }}>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+            whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            ref={containerRef}
+            className="relative"
+            style={{ width: 520, height: 520 }}
+            onClick={(e) => { if (e.target === e.currentTarget) { setActiveId(null); setAutoRotate(true); } }}
+          >
             {/* Center hub */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 border border-primary/30 flex items-center justify-center z-10">
               <motion.div animate={{ rotate: 360 }} transition={{ duration: 8, repeat: Infinity, ease: "linear" }}>
@@ -97,8 +143,20 @@ export default function FeaturesSection() {
             </div>
 
             {/* Orbit rings */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full border border-border/30" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full border border-border/20" />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full border border-border/30"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full border border-border/20"
+            />
 
             {features.map((f, i) => {
               const angle = ((i / features.length) * 360 + rotationAngle) % 360;
@@ -123,19 +181,15 @@ export default function FeaturesSection() {
                   onClick={(e) => { e.stopPropagation(); toggleItem(f.id); }}
                   whileHover={{ scale: 1.1 }}
                 >
-                  {/* Node */}
                   <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300 shadow-lg ${
                     isActive ? "bg-primary text-primary-foreground scale-125 shadow-primary/30" : "bg-card border border-border hover:border-primary/50"
                   }`}>
                     <f.icon size={22} className={isActive ? "" : "text-primary"} />
                   </div>
-
-                  {/* Label */}
                   <p className={`text-xs font-semibold text-center mt-2 whitespace-nowrap transition-colors ${isActive ? "text-foreground" : "text-muted-foreground"}`}>
                     {f.title}
                   </p>
 
-                  {/* Expanded card */}
                   {isActive && (
                     <motion.div
                       initial={{ opacity: 0, scale: 0.8, y: 10 }}
@@ -159,19 +213,19 @@ export default function FeaturesSection() {
                 </motion.div>
               );
             })}
-          </div>
+          </motion.div>
         </div>
 
-        {/* Mobile cards */}
+        {/* Mobile cards with staggered reveal */}
         <div className="lg:hidden grid grid-cols-1 md:grid-cols-2 gap-4">
           {features.map((f, i) => (
             <motion.div
               key={f.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              whileHover={{ y: -4 }}
+              initial={{ opacity: 0, y: 60, scale: 0.9 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ delay: i * 0.1, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -6, transition: { duration: 0.2 } }}
               className="rounded-xl border border-border bg-card p-5 hover:border-primary/30 hover:shadow-lg transition-all group"
             >
               <div className="flex items-center gap-3 mb-3">
@@ -185,7 +239,13 @@ export default function FeaturesSection() {
               <h3 className="font-display text-lg font-semibold mb-1">{f.title}</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
               <div className="mt-3 h-1 bg-muted rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-primary to-accent rounded-full" style={{ width: `${f.energy}%` }} />
+                <motion.div
+                  className="h-full bg-gradient-to-r from-primary to-accent rounded-full"
+                  initial={{ width: 0 }}
+                  whileInView={{ width: `${f.energy}%` }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1, delay: 0.3 + i * 0.1 }}
+                />
               </div>
             </motion.div>
           ))}
